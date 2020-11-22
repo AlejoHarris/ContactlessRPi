@@ -1,0 +1,4 @@
+{
+    "python.formatting.provider": "yapf",
+    "liveServer.settings.port": 5501
+}
