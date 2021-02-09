@@ -19,12 +19,8 @@ function mapOld(x, in_min, in_max, out_min, out_max) {
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-
-
 app.use(express.static('public'));
-
 var io = require('socket.io')(server);
-
 io.sockets.on('connection', (socket) => {
     var clientIp = socket.request.connection.remoteAddress;
     clients.push({ client: socket.id, ip: clientIp });
@@ -69,7 +65,6 @@ io.sockets.on('connection', (socket) => {
 
     });
     socket.on('disconnect', () => {
-
         var clientIndex = clients.findIndex(clients => clients.client == socket.id);
         clients.splice(clientIndex, 1);
         clients.forEach((element, index) => {
