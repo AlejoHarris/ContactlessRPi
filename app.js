@@ -1,5 +1,3 @@
-//"192.168.1.103"
-
 const threesixty = 28300;
 const fs = require('fs');
 var express = require('express');
