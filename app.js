@@ -5,13 +5,13 @@ var app = express();
 var server = app.listen(process.env.PORT || 3000, listen);
 var clients = [];
 var tempAngles = [0, 0, 0];
-let sw = [false, false, false];
-let changing = [false, false, false];
-let confirmation = 0;
+var sw = [false, false, false];
+var changing = [false, false, false];
+var confirmation = 0;
 
 function listen() {
-    var host = server.address().address;
-    var port = server.address().port;
+    let host = server.address().address;
+    let port = server.address().port;
     console.log('Listening at http://' + host + ':' + port);
 }
 
@@ -22,24 +22,24 @@ function mapOld(x, in_min, in_max, out_min, out_max) {
 app.use(express.static('public'));
 var io = require('socket.io')(server);
 io.sockets.on('connection', (socket) => {
-    var clientIp = socket.request.connection.remoteAddress;
+    let clientIp = socket.request.connection.remoteAddress;
     clients.push({ client: socket.id, ip: clientIp });
     console.log('Connected users: ');
     clients.forEach((element) => {
         console.log(element.ip, element.client);
     })
     console.log('Client ' + clientIp + ' connected');
-    var clientIndex = clients.findIndex(clients => clients.client == socket.id);
+    let clientIndex = clients.findIndex(clients => clients.client == socket.id);
     io.to(socket.id).emit('turn', clientIndex);
 
     socket.on('data', (data) => {
         //console.log(data)
         socket.broadcast.emit('serverData', data);
-        var temp = [0, 0, 0];
+        let temp = [0, 0, 0];
         temp[0] = parseFloat(mapOld((data.c).toFixed(2), 0, 2 * Math.PI, 0, threesixty).toFixed(0));
         temp[1] = parseFloat(mapOld((data.m).toFixed(2), 0, 2 * Math.PI, 0, threesixty).toFixed(0));
         temp[2] = parseFloat(mapOld((data.y).toFixed(2), 0, 2 * Math.PI, 0, threesixty).toFixed(0));
-        var inputData = {
+        let inputData = {
             c: temp[0],
             m: temp[1],
             y: temp[2]
@@ -65,7 +65,7 @@ io.sockets.on('connection', (socket) => {
 
     });
     socket.on('disconnect', () => {
-        var clientIndex = clients.findIndex(clients => clients.client == socket.id);
+        let clientIndex = clients.findIndex(clients => clients.client == socket.id);
         clients.splice(clientIndex, 1);
         clients.forEach((element, index) => {
             io.to(element.client).emit('turn', index);
